@@ -1,0 +1,28 @@
+# Receiver using Rabbit MQ
+
+This project demonstrate how you can write a message queue receiver
+in Spring Boot using Rabbit MQ.
+
+In order to run this, you need to have a Rabbit MQ server runs some where
+that this application can connect to so that it can serve the incoming messages.
+To do that simply, I create a local Rabbit MQ server running on my Docker engine.
+The command to create & run this Rabbit MQ on my local Docker is as follows:
+
+```
+docker run -p 5672:5672 -p 15672:15672 -d --hostname my-rabbitmq-host --name my-rabittmq rabbitmq:3
+```
+
+To stop and remove it from my running instance, I use these two commands:
+
+```
+docker stop my-rabbitmq
+docker rm my-rabbitmq
+```
+
+To run this application, you can run it from the Ecliipse IDE using Spring STS at 
+`Boot Dashboard` or your can run at the command line inside the folder of this 
+project as follows:
+
+```
+mvn clean spring-boot:run
+```

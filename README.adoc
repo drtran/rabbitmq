@@ -1,0 +1,9 @@
+# Rabbit MQ related workspace
+
+This workspace includes two projects:
+
+- rcvr
+- sndr
+
+Go to each project for detail information.
+

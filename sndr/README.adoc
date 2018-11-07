@@ -1,0 +1,22 @@
+# Sender using Rabbit MQ
+
+This project performs the following main activities:
+
+- receiving a message via REST API
+- publishing the message to a message queue
+
+In order for this to work properly, you need to run a receiver
+(rcvr project). To run a receiver, consult the README.adoc on the rcvr
+project. You would also need to have access to a running Rabbit MQ 
+server. Again, consult the rcvr project.
+
+
+To run this application, you can run it from the Ecliipse IDE using Spring STS at 
+`Boot Dashboard` or your can run at the command line inside the folder of this 
+project as follows:
+
+```
+mvn clean spring-boot:run
+```
+
+To change a REST API port number, update the application.properties file.
