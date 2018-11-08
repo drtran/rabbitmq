@@ -6,17 +6,24 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonPrimitive;
 
 @Service
 public class Stix2ProcessorService {
 	private static final Logger logger = LoggerFactory.getLogger(Stix2ProcessorService.class);
 	private List<Hashtable<String, Object>> parsedDocs = new ArrayList<Hashtable<String, Object>>();
+
+	@Autowired
+	private Runner runner;
 
 	/**
 	 * Parse the given json doc. then add it to the end of the list. Caller can call
@@ -40,6 +47,14 @@ public class Stix2ProcessorService {
 		synchronized (parsedDocs) {
 			parsedDocs.add(elements);
 		}
+
+		StringBuilder sb = new StringBuilder();
+
+		elements.keySet().stream().sorted().forEach(key -> {
+			sb.append(key).append(": ").append(elements.get(key)).append('\n');
+		});
+
+		runner.publishes(sb.toString());
 
 		logger.info("processing Json doc ... complete");
 	}
@@ -78,8 +93,14 @@ public class Stix2ProcessorService {
 		jsonTree.entrySet().stream().forEach((entry) -> {
 			String curElName;
 			curElName = elName + "." + entry.getKey();
+			JsonElement value = entry.getValue();
 
-			logger.info(curElName + ":" + entry.getValue());
+			logger.info(curElName + ":" + value);
+
+			if (value instanceof JsonNull || value instanceof JsonPrimitive) {
+				elements.put(curElName, value);
+			}
+
 			if (jsonTree.get(entry.getKey()) != null) {
 				try {
 					if (jsonTree.get(entry.getKey()).getAsJsonArray() instanceof JsonArray) {

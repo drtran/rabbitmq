@@ -19,8 +19,9 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 @EnableAsync
 public class RcvrApplication {
 	static final String topicExchangeName = "rcvr-topic-exchange";
-
 	static final String queueName = "rcvr-queue";
+	static final String topicExchangeNameResponse = "response-topic-exchange";
+	static final String queueNameResponse = "response-queue";
 
 	@Bean
 	Queue queue() {
